@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.jiujiu.mvvmprojecttutorial.ui.splash.SplashActivityViewModel"/>
+            type="com.jiujiu.mvvmTemplate.ui.splash.SplashActivityViewModel" />
     </data>
 
     <RelativeLayout

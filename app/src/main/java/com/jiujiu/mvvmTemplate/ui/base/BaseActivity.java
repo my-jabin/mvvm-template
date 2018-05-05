@@ -22,13 +22,22 @@ public abstract class BaseActivity<T extends ViewDataBinding, V extends ViewMode
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         performDenpendencyInjection();
         super.onCreate(savedInstanceState);
+        performViewModel();
         performDataBinding();
     }
+
+    private void performViewModel() {
+        viewModel = generateViewModel();
+    }
+
+    protected abstract V generateViewModel();
 
     @LayoutRes
     public abstract int getLayoutId();
 
-    public abstract V getViewModel();
+    public V getViewModel() {
+        return viewModel;
+    }
 
     public void performDataBinding() {
         mBinding = DataBindingUtil.setContentView(this, getLayoutId());

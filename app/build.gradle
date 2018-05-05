@@ -41,8 +41,8 @@ dependencies {
     implementation 'com.google.dagger:dagger-android-support:2.15'
     annotationProcessor 'com.google.dagger:dagger-android-processor:2.15'
 
-    // ViewModel
-    implementation "android.arch.lifecycle:viewmodel:1.1.1"
+    // ViewModel and LiveData
+    implementation "android.arch.lifecycle:extensions:1.1.1"
 
     // Room
     implementation "android.arch.persistence.room:runtime:1.0.0"

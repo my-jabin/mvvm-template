@@ -1,5 +1,7 @@
 package com.jiujiu.mvvmTemplate.ui.splash;
 
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,14 +17,13 @@ import javax.inject.Inject;
 public class SplashActivity extends BaseActivity<ActivitySplashBinding,SplashActivityViewModel> implements SplashNavigator{
 
     @Inject
-    SplashActivityViewModel mViewModel;
-
+    ViewModelProvider.Factory factory;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mViewModel.setNavigator(this);
-        mViewModel.startSeeding();
+        getViewModel().setNavigator(this);
+        getViewModel().startSeeding();
     }
 
     @Override
@@ -31,8 +32,8 @@ public class SplashActivity extends BaseActivity<ActivitySplashBinding,SplashAct
     }
 
     @Override
-    public SplashActivityViewModel getViewModel() {
-        return mViewModel;
+    public SplashActivityViewModel generateViewModel() {
+        return ViewModelProviders.of(this, factory).get(SplashActivityViewModel.class);
     }
 
     @Override

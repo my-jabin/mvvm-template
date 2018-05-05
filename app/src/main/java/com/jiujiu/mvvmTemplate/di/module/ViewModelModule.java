@@ -23,7 +23,7 @@ public abstract class ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(SplashActivityViewModel.class)
+    @ViewModelKey(MainActivityViewModel.class)
     abstract ViewModel bindsMainActivityViewModel(MainActivityViewModel mainActivityViewModel);
 
 

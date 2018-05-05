@@ -1,5 +1,7 @@
 package com.jiujiu.mvvmTemplate.ui.main;
 
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 
 import com.jiujiu.mvvmTemplate.BR;
@@ -12,9 +14,7 @@ import javax.inject.Inject;
 public class MainActivity extends BaseActivity<ActivityMainBinding,MainActivityViewModel> {
 
     @Inject
-    MainActivityViewModel mViewModel;
-
-
+    ViewModelProvider.Factory factory;
 
 
     @Override
@@ -23,14 +23,15 @@ public class MainActivity extends BaseActivity<ActivityMainBinding,MainActivityV
     }
 
     @Override
+    protected MainActivityViewModel generateViewModel() {
+        return ViewModelProviders.of(this, factory).get(MainActivityViewModel.class);
+    }
+
+    @Override
     public int getLayoutId() {
         return R.layout.activity_main;
     }
 
-    @Override
-    public MainActivityViewModel getViewModel() {
-        return mViewModel;
-    }
 
     @Override
     public int getBindingVariableId() {

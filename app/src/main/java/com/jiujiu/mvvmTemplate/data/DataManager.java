@@ -1,7 +1,6 @@
 package com.jiujiu.mvvmTemplate.data;
 
 import com.jiujiu.mvvmTemplate.data.repository.UserRepository;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
 

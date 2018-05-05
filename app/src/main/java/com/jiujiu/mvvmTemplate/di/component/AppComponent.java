@@ -13,15 +13,16 @@ import dagger.Component;
 import dagger.android.AndroidInjectionModule;
 
 @Singleton
-@Component(modules ={ AndroidInjectionModule.class,
+@Component(modules = {AndroidInjectionModule.class,
         AppModule.class,
         ActivityBuilder.class})
 public interface AppComponent {
 
     @Component.Builder
-    interface Builder{
+    interface Builder {
         @BindsInstance
         Builder application(Application application);
+
         AppComponent build();
     }
 

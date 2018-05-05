@@ -1,5 +1,6 @@
 package com.jiujiu.mvvmTemplate.ui.splash;
 
+import com.jiujiu.mvvmTemplate.data.DataManager;
 import com.jiujiu.mvvmTemplate.ui.base.BaseViewModel;
 
 import javax.inject.Inject;
@@ -11,8 +12,8 @@ import io.reactivex.schedulers.Schedulers;
 public class SplashActivityViewModel extends BaseViewModel<SplashNavigator> {
 
     @Inject
-    public SplashActivityViewModel() {
-        super();
+    public SplashActivityViewModel(DataManager dataManager) {
+        super(dataManager);
     }
 
     public void startSeeding() {
@@ -28,5 +29,9 @@ public class SplashActivityViewModel extends BaseViewModel<SplashNavigator> {
                         .subscribe(
                                 () -> getNavigator().openMainActivity())
         );
+    }
+
+    public void setCurrentUserName(String userName) {
+        getDataManager().setCurrentUserName(userName);
     }
 }

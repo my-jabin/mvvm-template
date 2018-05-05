@@ -2,34 +2,40 @@ package com.jiujiu.mvvmTemplate.ui.base;
 
 import android.arch.lifecycle.ViewModel;
 
+import com.jiujiu.mvvmTemplate.data.DataManager;
+
 import io.reactivex.disposables.CompositeDisposable;
 
 public class BaseViewModel<N> extends ViewModel {
 
-    private CompositeDisposable disposable;
+    private CompositeDisposable mDisposable;
     private N mNavigator;
+    private final DataManager mDataManager;
 
-
-    public BaseViewModel() {
-        disposable = new CompositeDisposable();
+    public BaseViewModel(DataManager dataManager) {
+        mDisposable = new CompositeDisposable();
+        this.mDataManager = dataManager;
     }
 
+    public DataManager getDataManager() {
+        return mDataManager;
+    }
 
-    public void setNavigator(N navigator){
+    public void setNavigator(N navigator) {
         this.mNavigator = navigator;
     }
 
-    public N getNavigator(){
+    public N getNavigator() {
         return this.mNavigator;
     }
 
     public CompositeDisposable getCompositeDisposable() {
-        return disposable;
+        return mDisposable;
     }
 
     @Override
     protected void onCleared() {
-        disposable.dispose();
+        mDisposable.dispose();
         super.onCleared();
     }
 }

@@ -11,10 +11,11 @@ import com.jiujiu.mvvmTemplate.R;
 import com.jiujiu.mvvmTemplate.databinding.ActivitySplashBinding;
 import com.jiujiu.mvvmTemplate.ui.base.BaseActivity;
 import com.jiujiu.mvvmTemplate.ui.main.MainActivity;
+import com.jiujiu.mvvmTemplate.util.AppConstant;
 
 import javax.inject.Inject;
 
-public class SplashActivity extends BaseActivity<ActivitySplashBinding,SplashActivityViewModel> implements SplashNavigator{
+public class SplashActivity extends BaseActivity<ActivitySplashBinding, SplashActivityViewModel> implements SplashNavigator {
 
     @Inject
     ViewModelProvider.Factory factory;
@@ -23,6 +24,7 @@ public class SplashActivity extends BaseActivity<ActivitySplashBinding,SplashAct
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getViewModel().setNavigator(this);
+        getViewModel().setCurrentUserName(AppConstant.USERNAME);
         getViewModel().startSeeding();
     }
 

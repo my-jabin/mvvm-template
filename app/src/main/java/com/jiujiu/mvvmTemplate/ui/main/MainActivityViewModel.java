@@ -1,5 +1,6 @@
 package com.jiujiu.mvvmTemplate.ui.main;
 
+import com.jiujiu.mvvmTemplate.data.DataManager;
 import com.jiujiu.mvvmTemplate.ui.base.BaseViewModel;
 
 import javax.inject.Inject;
@@ -7,8 +8,12 @@ import javax.inject.Inject;
 public class MainActivityViewModel extends BaseViewModel {
 
     @Inject
-    public MainActivityViewModel() {
+    public MainActivityViewModel(DataManager dataManager) {
+        super(dataManager);
     }
 
+    public String getCurrentUserName() {
+        return getDataManager().getCurrentUserName();
+    }
 
 }

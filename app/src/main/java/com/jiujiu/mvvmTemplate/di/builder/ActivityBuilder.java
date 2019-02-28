@@ -9,7 +9,8 @@ import dagger.android.ContributesAndroidInjector;
 @Module
 public abstract class ActivityBuilder {
 
-    //    @ContributesAndroidInjector(modules = SplashActivityModule.class)
+    // @ContributesAndroidInjector(modules = SplashActivityModule.class)
+    // SplashActivityModule provides the dependencies specific to the SplashActivity
     @ContributesAndroidInjector()
     abstract SplashActivity bindsSplashActivity();
 

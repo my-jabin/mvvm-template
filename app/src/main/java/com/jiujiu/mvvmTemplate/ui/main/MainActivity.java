@@ -3,6 +3,7 @@ package com.jiujiu.mvvmTemplate.ui.main;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.widget.TextView;
 
 import com.jiujiu.mvvmTemplate.BR;
@@ -12,10 +13,17 @@ import com.jiujiu.mvvmTemplate.ui.base.BaseActivity;
 
 import javax.inject.Inject;
 
-public class MainActivity extends BaseActivity<ActivityMainBinding, MainActivityViewModel> {
+import dagger.android.AndroidInjector;
+import dagger.android.DispatchingAndroidInjector;
+import dagger.android.support.HasSupportFragmentInjector;
+
+public class MainActivity extends BaseActivity<ActivityMainBinding, MainActivityViewModel> implements HasSupportFragmentInjector {
 
     @Inject
     ViewModelProvider.Factory factory;
+
+    @Inject
+    DispatchingAndroidInjector<Fragment> fragmentDispatchingAndroidInjector;
 
 
     @Override
@@ -45,5 +53,10 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainActivity
     @Override
     public int getBindingVariableId() {
         return BR.viewModel;
+    }
+
+    @Override
+    public AndroidInjector<Fragment> supportFragmentInjector() {
+        return fragmentDispatchingAndroidInjector;
     }
 }

@@ -1,7 +1,7 @@
 package com.jiujiu.mvvmTemplate.di.builder;
 
 import com.jiujiu.mvvmTemplate.ui.main.MainActivity;
-import com.jiujiu.mvvmTemplate.ui.splash.SplashActivity;
+import com.jiujiu.mvvmTemplate.ui.settings.SettingsActivity;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
@@ -10,9 +10,9 @@ import dagger.android.ContributesAndroidInjector;
 public abstract class ActivityBuilder {
 
     // @ContributesAndroidInjector(modules = SplashActivityModule.class)
-    // SplashActivityModule provides the dependencies specific to the SplashActivity
+    // SplashActivityModule provides the dependencies specific to the SettingsActivity
     @ContributesAndroidInjector()
-    abstract SplashActivity bindsSplashActivity();
+    abstract SettingsActivity bindsSettingsActivity();
 
     @ContributesAndroidInjector()
     abstract MainActivity bindsMainActivity();

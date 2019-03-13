@@ -6,7 +6,7 @@ import android.arch.lifecycle.ViewModelProvider;
 import com.jiujiu.mvvmTemplate.di.ViewModelFactory;
 import com.jiujiu.mvvmTemplate.di.ViewModelKey;
 import com.jiujiu.mvvmTemplate.ui.main.MainActivityViewModel;
-import com.jiujiu.mvvmTemplate.ui.splash.SplashActivityViewModel;
+import com.jiujiu.mvvmTemplate.ui.settings.SettingsActivityViewModel;
 
 import dagger.Binds;
 import dagger.Module;
@@ -17,8 +17,8 @@ public abstract class ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(SplashActivityViewModel.class)
-    abstract ViewModel bindsSplashActivityViewModel(SplashActivityViewModel splashActivityViewModel);
+    @ViewModelKey(SettingsActivityViewModel.class)
+    abstract ViewModel bindsSettingsActivityViewModel(SettingsActivityViewModel settingsActivityViewModel);
 
 
     @Binds

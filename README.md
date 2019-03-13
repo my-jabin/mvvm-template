@@ -74,7 +74,7 @@ public abstract class ViewModelModule {
     @Binds
     @IntoMap
     @ViewModelKey(SplashActivityViewModel.class)
-    abstract ViewModel bindsSplashActivityViewModel(SplashActivityViewModel splashActivityViewModel);
+    abstract ViewModel bindsSplashActivityViewModel(SplashActivityViewModel settingsActivityViewModel);
 
     @Binds
     @IntoMap

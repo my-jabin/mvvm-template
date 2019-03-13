@@ -1,4 +1,4 @@
-package com.jiujiu.mvvmTemplate.ui.splash;
+package com.jiujiu.mvvmTemplate.ui.settings;
 
 public interface SplashNavigator {
 

@@ -6,13 +6,13 @@
     <data>
         <variable
             name="viewModel"
-            type="com.jiujiu.mvvmTemplate.ui.splash.SplashActivityViewModel" />
+            type="com.jiujiu.mvvmTemplate.ui.settings.SettingsActivityViewModel" />
     </data>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.splash.SplashActivity">
+        tools:context=".ui.settings.SettingsActivity">
 
         <ImageView
             android:id="@+id/imageView"

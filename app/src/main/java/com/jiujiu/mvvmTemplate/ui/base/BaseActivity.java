@@ -1,16 +1,16 @@
 package com.jiujiu.mvvmTemplate.ui.base;
 
-import android.arch.lifecycle.ViewModel;
 import android.content.Context;
-import android.databinding.DataBindingUtil;
-import android.databinding.ViewDataBinding;
 import android.os.Bundle;
-import android.support.annotation.LayoutRes;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import androidx.annotation.LayoutRes;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
+import androidx.lifecycle.ViewModel;
 import dagger.android.AndroidInjection;
 
 public abstract class BaseActivity<T extends ViewDataBinding, V extends ViewModel> extends AppCompatActivity {

@@ -11,15 +11,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".ui.settings.SettingsActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:name=".ui.settings.SettingsActivity2"
+            android:label="@string/title_activity_settings2"></activity>
+        <activity android:name=".ui.settings.SettingsActivity"></activity>
+        <activity android:name=".ui.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.main.MainActivity"></activity>
     </application>
 
 </manifest>

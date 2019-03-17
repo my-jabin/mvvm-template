@@ -3,6 +3,9 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="secondaryTextColor">#001111</color>
+    <color name="primaryTextColor">#000000</color>
+    <color name="hintTextColor">#121212</color>
 
     <!--Design colors-->
     <color name="red_dark">#F06423</color>

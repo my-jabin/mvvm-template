@@ -1,5 +1,6 @@
 package com.jiujiu.mvvmTemplate.di.builder;
 
+import com.jiujiu.mvvmTemplate.di.module.main.MainActivityModule;
 import com.jiujiu.mvvmTemplate.ui.main.MainActivity;
 import com.jiujiu.mvvmTemplate.ui.settings.SettingsActivity;
 
@@ -14,7 +15,7 @@ public abstract class ActivityBuilder {
     @ContributesAndroidInjector()
     abstract SettingsActivity bindsSettingsActivity();
 
-    @ContributesAndroidInjector()
+    @ContributesAndroidInjector(modules = MainActivityModule.class)
     abstract MainActivity bindsMainActivity();
 
 }

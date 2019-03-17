@@ -1,19 +1,21 @@
 package com.jiujiu.mvvmTemplate.ui.settings;
 
-import android.arch.lifecycle.ViewModelProvider;
-import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 
-import com.android.databinding.library.baseAdapters.BR;
+import com.jiujiu.mvvmTemplate.BR;
 import com.jiujiu.mvvmTemplate.R;
-import com.jiujiu.mvvmTemplate.databinding.ActivitySplashBinding;
+import com.jiujiu.mvvmTemplate.databinding.ActivitySettingsBinding;
 import com.jiujiu.mvvmTemplate.ui.base.BaseActivity;
-import com.jiujiu.mvvmTemplate.util.AppConstant;
 
 import javax.inject.Inject;
 
-public class SettingsActivity extends BaseActivity<ActivitySplashBinding, SettingsActivityViewModel> {
+import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
+
+public class SettingsActivity extends BaseActivity<ActivitySettingsBinding, SettingsActivityViewModel> {
+
+    // todo: create a simple settings activity
 
     @Inject
     ViewModelProvider.Factory factory;
@@ -21,9 +23,6 @@ public class SettingsActivity extends BaseActivity<ActivitySplashBinding, Settin
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        getViewModel().setNavigator(this);
-        getViewModel().setCurrentUserName(AppConstant.USERNAME);
-//        getViewModel().startSeeding();
     }
 
     @Override
@@ -41,11 +40,4 @@ public class SettingsActivity extends BaseActivity<ActivitySplashBinding, Settin
         return BR.viewModel;
     }
 
-
-//    @Override
-//    public void openMainActivity() {
-//        Intent intent = new Intent(this, MainActivity.class);
-//        startActivity(intent);
-//        finish();
-//    }
 }

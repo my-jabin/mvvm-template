@@ -10,11 +10,13 @@ import javax.inject.Singleton;
 
 import dagger.BindsInstance;
 import dagger.Component;
-import dagger.android.AndroidInjectionModule;
+import dagger.android.support.AndroidSupportInjectionModule;
 
 /**
  * AndroidInjectionModule.class: provided by Dagger 2.10.
  * Contains bindings to ensure the usability of dagger.android framework classes.
+ * <p>
+ * AndroidSupportInjectionModule.class for supporting androidx
  * This module should be installed in the component that is used to inject the Application class.
  * <p>
  * ActivityBuilder.class: customized module. We map all activities here, tell Dagger all of our activities in compile time
@@ -23,7 +25,7 @@ import dagger.android.AndroidInjectionModule;
  */
 
 @Singleton
-@Component(modules = {AndroidInjectionModule.class,
+@Component(modules = {AndroidSupportInjectionModule.class,
         AppModule.class,
         ActivityBuilder.class})
 public interface AppComponent {

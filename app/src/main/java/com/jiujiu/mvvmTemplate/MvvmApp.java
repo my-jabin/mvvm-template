@@ -8,6 +8,9 @@ import com.jiujiu.mvvmTemplate.di.component.DaggerAppComponent;
 import javax.inject.Inject;
 
 import androidx.fragment.app.Fragment;
+import androidx.work.Configuration;
+import androidx.work.WorkManager;
+import androidx.work.WorkerFactory;
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.HasActivityInjector;
@@ -22,6 +25,9 @@ public class MvvmApp extends Application implements HasActivityInjector, HasSupp
     DispatchingAndroidInjector<Fragment> supportFragmentInjector;
 
 
+    @Inject
+    WorkerFactory myWorkerFactory;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -30,7 +36,11 @@ public class MvvmApp extends Application implements HasActivityInjector, HasSupp
                 .application(this)
                 .build()
                 .inject(this);
+
+//        MyWorkerFactory myWorkerFactory =  new DaggerAppComponent().in
+        WorkManager.initialize(this, new Configuration.Builder().setWorkerFactory(myWorkerFactory).build());
     }
+
 
     @Override
     public AndroidInjector<Activity> activityInjector() {

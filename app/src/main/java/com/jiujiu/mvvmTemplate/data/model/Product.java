@@ -5,10 +5,14 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity
-public class User {
+public class Product {
 
     @PrimaryKey
     public Long id;
+
+    public String brand;
+
+    public double price;
 
     public String name;
 

@@ -15,5 +15,4 @@ public abstract class MainActivityModule {
     @ContributesAndroidInjector(modules = OrderFragmentModule.class)
     abstract OrdersFragment bindsOrdersFragment();
 
-
 }

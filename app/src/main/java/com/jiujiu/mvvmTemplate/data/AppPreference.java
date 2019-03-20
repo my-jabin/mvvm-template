@@ -3,7 +3,7 @@ package com.jiujiu.mvvmTemplate.data;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.jiujiu.mvvmTemplate.di.PreferenceInfo;
+import com.jiujiu.mvvmTemplate.di.scope.PreferenceInfo;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;

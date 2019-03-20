@@ -2,42 +2,30 @@ package com.jiujiu.mvvmTemplate.ui.settings;
 
 import android.os.Bundle;
 
-import com.jiujiu.mvvmTemplate.BR;
 import com.jiujiu.mvvmTemplate.R;
-import com.jiujiu.mvvmTemplate.databinding.ActivitySettingsBinding;
-import com.jiujiu.mvvmTemplate.ui.base.BaseActivity;
-
-import javax.inject.Inject;
 
 import androidx.annotation.Nullable;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NavUtils;
 
-public class SettingsActivity extends BaseActivity<ActivitySettingsBinding, SettingsActivityViewModel> {
-
-    // todo: create a simple settings activity
-
-    @Inject
-    ViewModelProvider.Factory factory;
+public class SettingsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    }
+        setContentView(R.layout.activity_settings);
 
-    @Override
-    public int getLayoutId() {
-        return R.layout.activity_settings;
-    }
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        if (toolbar != null) {
+            toolbar.setNavigationOnClickListener(v -> NavUtils.navigateUpFromSameTask(this));
+        }
 
-    @Override
-    public SettingsActivityViewModel generateViewModel() {
-        return ViewModelProviders.of(this, factory).get(SettingsActivityViewModel.class);
-    }
 
-    @Override
-    public int getBindingVariableId() {
-        return BR.viewModel;
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.container, new SettingFragment())
+                .commit();
     }
-
 }

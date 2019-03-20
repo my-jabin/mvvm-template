@@ -1,20 +1,26 @@
 package com.jiujiu.mvvmTemplate.data;
 
-import com.jiujiu.mvvmTemplate.data.repository.UserRepository;
+import com.jiujiu.mvvmTemplate.data.model.Product;
+import com.jiujiu.mvvmTemplate.data.repository.ProductRepository;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+
+import io.reactivex.Observable;
 
 @Singleton
 public class DataManager {
 
     private AppPreference mPreference;
-    private UserRepository mUserRepository;
+    private ProductRepository mProductRepository;
 
     @Inject
-    public DataManager(AppPreference preference, UserRepository userRepository) {
+    public DataManager(AppPreference preference, ProductRepository productRepository) {
         mPreference = preference;
-        this.mUserRepository = userRepository;
+        this.mProductRepository = productRepository;
     }
 
     public String getCurrentUserName() {
@@ -23,5 +29,21 @@ public class DataManager {
 
     public void setCurrentUserName(String userName) {
         this.mPreference.setUserName(userName);
+    }
+
+    public void prePupulateData() {
+        List<Product> products = new ArrayList<>();
+        for (int i = 1; i <= 5; i++) {
+            Product p = new Product();
+            p.name = "Product Name " + i;
+            p.price = i * 10;
+            p.brand = "Brand " + i;
+            products.add(p);
+        }
+        mProductRepository.insert(products.toArray(new Product[products.size()]));
+    }
+
+    public Observable<List<Product>> getAllProducts() {
+        return this.mProductRepository.loadAllProducts();
     }
 }

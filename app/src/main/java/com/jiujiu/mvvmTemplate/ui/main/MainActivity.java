@@ -53,12 +53,10 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainActivity
         getBinding().bottomNavigation.setOnNavigationItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.bottom_navi_product:
-                    // todo: do something
                     Toast.makeText(this, "Products is clicked", Toast.LENGTH_SHORT).show();
                     showFragment(PRODUCTSFRAG);
                     return true;
                 case R.id.bottom_navi_order:
-                    // todo: do something
                     Toast.makeText(this, "Orders is clicked", Toast.LENGTH_SHORT).show();
                     showFragment(ORDERSFRAG);
                     return true;
@@ -119,7 +117,6 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_settings:
-                // todo:
                 Intent intent = new Intent(this, SettingsActivity.class);
                 startActivity(intent);
                 return true;

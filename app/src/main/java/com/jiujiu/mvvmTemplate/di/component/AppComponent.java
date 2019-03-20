@@ -5,6 +5,7 @@ import android.app.Application;
 import com.jiujiu.mvvmTemplate.MvvmApp;
 import com.jiujiu.mvvmTemplate.di.builder.ActivityBuilder;
 import com.jiujiu.mvvmTemplate.di.module.AppModule;
+import com.jiujiu.mvvmTemplate.di.module.WorkerAssistedInjectModule;
 
 import javax.inject.Singleton;
 
@@ -26,6 +27,7 @@ import dagger.android.support.AndroidSupportInjectionModule;
 
 @Singleton
 @Component(modules = {AndroidSupportInjectionModule.class,
+        WorkerAssistedInjectModule.class,
         AppModule.class,
         ActivityBuilder.class})
 public interface AppComponent {

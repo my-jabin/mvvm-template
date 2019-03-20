@@ -1,6 +1,9 @@
 # mvvm-template
 A template for quickly building a project that implements MVVM architecture by using Room, Dagger2, RxJava2, Data Binding.
 
+## Requirement:
+Android Studio 3.3+
+
 ## How to use it
 1. Add/Modify your entities class. In the template, there is only a `User` entity. Add your own entity. Then create a corresponding `Dao` and `Repository` class, add `Dao` to `AppDatabase` class.
 2. Dependency injection:
@@ -134,3 +137,43 @@ public abstract class ActivityBuilder_BindsSplashActivity {
 Thanks to:
  * [The New Dagger 2 Android Injector](https://blog.mindorks.com/the-new-dagger-2-android-injector-cbe7d55afa6a)
  * [Tasting Dagger 2 on Android](https://fernandocejas.com/2015/04/11/tasting-dagger-2-on-android/)
+
+---
+
+#### How to perform constructor injection in the `androidx.work.Worker`
+**Problem**:
+``` java
+public class PrePopulateDataWorker extends Worker {
+   public PrePopulateDataWorker(@NonNull Context context,@NonNull WorkerParameters workerParams) {
+       super(context, workerParams);
+   }
+}
+```
+`Worker` are instantiated by `WorkerManager` (like Activity and Fragment are instantiated by Android framework) not by us. This means you can’t pass any other parameter as the dependencies in the constructor expect the `Context` and `WorkerParameters`, therefore, it is almost impossible to perform constructor injection on `Worker` class. This left out for us the only option is field injection. However, filed injection is not recommended. The best practice is to use constructor injection.
+
+**Expectation**
+We could perform constructor injection like below.
+``` java
+@Inject
+public PrePopulateDataWorker(@NonNull Context context, @NonNull WorkerParameters workerParams, DataManager dataManager) {
+    super(context, workerParams);
+    this.dataManager = dataManager;
+}
+```
+
+ In this template-project, we could perform constructor inject similar to the above code.
+ ``` java
+@AssistedInject
+public PrePopulateDataWorker(@Assisted @NonNull Context context, @Assisted @NonNull WorkerParameters workerParams, DataManager dataManager) {
+    super(context, workerParams);
+    this.dataManager = dataManager;
+}
+ ```
+ Here we inject the instance of `DataManger` to the constructor, the `Context` and `WorkerParameters` is provides by Android system.
+
+**Solution**  
+Solution is from this [post](https://medium.com/@nlg.tuan.kiet/dagger-2-setup-with-workmanager-a-complete-step-by-step-guild-bb9f474bde37).
+
+ ## Room
+
+ > Notice: Until we perform some concrete operation, such as invoking a `@Dao` method that hits the database, your database will not be created.

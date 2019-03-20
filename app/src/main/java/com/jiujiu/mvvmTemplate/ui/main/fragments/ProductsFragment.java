@@ -31,6 +31,18 @@ public class ProductsFragment extends BaseFragment<FragmentProductsBinding, Prod
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+
+        setupViewModel();
+
+        getViewModel().loadProducts();
+    }
+
+    private void setupViewModel() {
+        getViewModel().getProductLiveData().observe(this, products -> {
+            if (products == null) return;
+            getBinding().tvMain.setText("Total products: " + products.size());
+        });
     }
 
     @Override

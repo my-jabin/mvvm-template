@@ -5,7 +5,6 @@ import com.jiujiu.mvvmTemplate.data.DataManager;
 import androidx.lifecycle.ViewModel;
 import io.reactivex.disposables.CompositeDisposable;
 
-// todo: remove generic type N, mNatigator
 public class BaseViewModel extends ViewModel {
 
     private CompositeDisposable mDisposable;
@@ -16,7 +15,7 @@ public class BaseViewModel extends ViewModel {
         this.mDataManager = dataManager;
     }
 
-    public DataManager getDataManager() {
+    protected DataManager getDataManager() {
         return mDataManager;
     }
 

@@ -1,4 +1,4 @@
-package com.jiujiu.mvvmTemplate.di;
+package com.jiujiu.mvvmTemplate.di.scope;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

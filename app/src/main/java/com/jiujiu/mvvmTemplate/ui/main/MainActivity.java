@@ -15,30 +15,15 @@ import com.jiujiu.mvvmTemplate.ui.main.fragments.OrdersFragment;
 import com.jiujiu.mvvmTemplate.ui.main.fragments.ProductsFragment;
 import com.jiujiu.mvvmTemplate.ui.settings.SettingsActivity;
 
-import javax.inject.Inject;
-
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
-import dagger.android.AndroidInjector;
-import dagger.android.DispatchingAndroidInjector;
-import dagger.android.support.HasSupportFragmentInjector;
 
 import static com.jiujiu.mvvmTemplate.util.AppConstant.Tag.ORDERSFRAG;
 import static com.jiujiu.mvvmTemplate.util.AppConstant.Tag.PRODUCTSFRAG;
 
-public class MainActivity extends BaseActivity<ActivityMainBinding, MainActivityViewModel> implements HasSupportFragmentInjector {
-
-
-    @Inject
-    ViewModelProvider.Factory factory;
-
-    @Inject
-    DispatchingAndroidInjector<Fragment> fragmentDispatchingAndroidInjector;
-
+public class MainActivity extends BaseActivity<ActivityMainBinding, MainActivityViewModel> {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,8 +111,8 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainActivity
     }
 
     @Override
-    protected MainActivityViewModel generateViewModel() {
-        return ViewModelProviders.of(this, factory).get(MainActivityViewModel.class);
+    protected Class<MainActivityViewModel> getViewModelClassType() {
+        return MainActivityViewModel.class;
     }
 
     @Override
@@ -141,8 +126,4 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainActivity
         return BR.viewModel;
     }
 
-    @Override
-    public AndroidInjector<Fragment> supportFragmentInjector() {
-        return fragmentDispatchingAndroidInjector;
-    }
 }

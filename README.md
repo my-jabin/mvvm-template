@@ -1,16 +1,20 @@
 # mvvm-template
-A template for quickly building a project that implements MVVM architecture by using Room, Dagger2, RxJava2, Data Binding.
+A template for quickly building a project that implements MVVM architecture using ViewModel,  Room, Dagger2, RxJava2, Data Binding, WorkManager.
 
 ## Requirement:
 Android Studio 3.3+
 
+## Architecture
+![](images/mvvm-architecture.png)
+
 ## How to use it
-1. Add/Modify your entities class. In the template, there is only a `User` entity. Add your own entity. Then create a corresponding `Dao` and `Repository` class, add `Dao` to `AppDatabase` class.
+1. Add/Modify the entities class. In the template, there is only a `User` entity. Add your own entity. Then create a corresponding `Dao` and `Repository` class, add `Dao` to `AppDatabase` class.
 2. Dependency injection:
     * Your activities need to be added in the `ActivityBuilder` class.
     * Your `ViewModel` class need to be added in the `ViewModelModule` class.
     * If any application associated dependencies is required, could be provided in the `AppModule` class
     * Any activity associated dependencies could be provided in the `xxxActivityModule` class
+    * Binds your own `Worker` in the `WorkerBindingModule`, do not forget the Factory interface, see the example class `PrePopulateDataWorker`.
 3. Change the UI components.
 
 
@@ -174,6 +178,153 @@ public PrePopulateDataWorker(@Assisted @NonNull Context context, @Assisted @NonN
 **Solution**  
 Solution is from this [post](https://medium.com/@nlg.tuan.kiet/dagger-2-setup-with-workmanager-a-complete-step-by-step-guild-bb9f474bde37).
 
- ## Room
+**Explain**
+`WorkManager` allows us to provide our own custom `WorkFactory` which is responsible for creating `ListenableWorker` instances. `WorkManager` needs to be initialized when the application starts, before you get an instance of the `WorkManager` singleton. Hence it should be called either during `Application.onCreate()` or in a `ContentProvider.onCreate()`.
+> `Worker` is a subclass of `ListenableWorker`
 
- > Notice: Until we perform some concrete operation, such as invoking a `@Dao` method that hits the database, your database will not be created.
+``` java
+@Inject
+WorkerFactory myWorkerFactory;
+@Override
+public void onCreate() {
+   super.onCreate();
+   DaggerAppComponent.builder()
+           .application(this)
+           .build()
+           .inject(this);
+   WorkManager.initialize(this, new Configuration.Builder().setWorkerFactory(myWorkerFactory).build());
+}
+```
+Instance `myWorkerFactory` is now responsible for creating `ListenableWorker` object.
+How does `myWorkerFactory` create `ListenableWorker`?
+``` java
+@Singleton
+public class MyWorkerFactory extends WorkerFactory {
+
+    private final Map<Class<? extends ListenableWorker>, Provider<CustomWorkerFactory>> workerFactories;
+
+    @Inject
+    public MyWorkerFactory(Map<Class<? extends ListenableWorker>, Provider<CustomWorkerFactory>> workerFactories) {
+        this.workerFactories = workerFactories;
+    }
+
+    @Nullable
+    @Override
+    public ListenableWorker createWorker(@NonNull Context appContext, @NonNull String workerClassName, @NonNull WorkerParameters workerParameters) {
+        ListenableWorker listenableWorker = null;
+        try {
+            Provider<? extends CustomWorkerFactory> provider = null;
+            for (Map.Entry<Class<? extends ListenableWorker>, Provider<CustomWorkerFactory>> entry : workerFactories.entrySet()) {
+                if (Class.forName(workerClassName).isAssignableFrom(entry.getKey())) {
+                    provider = entry.getValue();
+                    break;
+                }
+            }
+            if (provider == null) {
+                throw new IllegalArgumentException("unknown model class " + workerClassName);
+            }
+            listenableWorker = provider.get().create(appContext, workerParameters);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return listenableWorker;
+    }
+}
+```
+It gets `Worker` from a `Map` instance, here is `workerFactories`. This map has the structure:
+* **Key**: class<? extends ListenableWorker>
+* **Value**: Provider< CustomWorkerFactory>
+
+in the `createWorker` method, We search the map `workerFactories` based on the given `workerClassName` to find out a `CustomWorkerFactory` instance, this `CustomWorkerFactory` is able to create a `ListenableWorker` via method `create(Context context, WorkerParameters workerParams)`. After that, a `ListenableWorker` is created and returned.
+ ``` java
+public interface CustomWorkerFactory {
+    ListenableWorker create(Context context, WorkerParameters workerParams);
+}
+ ```
+**Question**: where does the `workerFactories` come from?
+It's injected by dagger multibindings.
+``` java
+@Module
+public abstract class WorkerBindingModule {
+    @Binds
+    @IntoMap
+    @WorkerKey(PrePopulateDataWorker.class)
+    abstract CustomWorkerFactory bindsPrePopulateDataWorker(PrePopulateDataWorker.Factory factory);
+
+    @Binds
+    abstract WorkerFactory bindsWorkerFactory(MyWorkerFactory factory);
+}
+```
+We bind objects into a map. In this example, the map has one entry with
+* **Key**: `PrePopulateDataWorker.class`. A subclass of `Worker`
+* **Value**: `PrePopulateDataWorker.Factory` instance. It's a subtype of `CustomWorkerFactory`
+
+Dagger helps us inject a instance of `PrePopulateDataWorker.Factory` automatically into the map in the runtime.
+
+``` java
+public class PrePopulateDataWorker extends Worker {
+  ...
+  @AssistedInject.Factory
+  public interface Factory extends CustomWorkerFactory {
+  }
+}
+```
+**Question**: What is the implementation of the interface `PrePopulateDataWorker.Factory`?
+Thanks to `AssistedInject`, check the generated code:
+``` java
+@Module
+public abstract class AssistedInject_WorkerAssistedInjectModule {
+  private AssistedInject_WorkerAssistedInjectModule() {
+  }
+
+  @Binds
+  abstract PrePopulateDataWorker.Factory bind_com_jiujiu_mvvmTemplate_worker_PrePopulateDataWorker(
+      PrePopulateDataWorker_AssistedFactory factory);
+}
+```
+this abstract class is annotated with `@Module` which provides an implementation of `PrePopulateDataWorker.Factory`, the `PrePopulateDataWorker_AssistedFactory` instance which is also generated by `AssistedInject`
+``` java
+public final class PrePopulateDataWorker_AssistedFactory implements PrePopulateDataWorker.Factory {
+  private final Provider<DataManager> dataManager;
+
+  @Inject
+  public PrePopulateDataWorker_AssistedFactory(Provider<DataManager> dataManager) {
+    this.dataManager = dataManager;
+  }
+
+  @Override
+  public ListenableWorker create(Context context, WorkerParameters workerParams) {
+    return new PrePopulateDataWorker(
+        context,
+        workerParams,
+        dataManager.get());
+  }
+}
+```
+In this class, the `DataManager` is injected!!! It also returns a `PrePopulateDataWorker` instance in the `create` method.
+
+Go back to the dagger multibindings map, now we are much more clear what is inside of this map.  It has for now only one entry:
+* **Key**: `PrePopulateDataWorker.class`. A subclass of `Worker`
+* **Value**: `PrePopulateDataWorker_AssistedFactory` instance. It's a subtype of `CustomWorkerFactory`
+
+When we want to enqueue a worker into the `WorkManager`, our `myWorkFactory` search the multibinding map and return the corresponding `Worker` for us.
+``` java
+OneTimeWorkRequest request = new OneTimeWorkRequest.Builder(PrePopulateDataWorker.class).build();
+WorkManager.getInstance().enqueue(request);
+```
+
+**Summary**
+* Cannot control how `Worker` instance is instanced
+=> register a custom `WorkerFactory` to `WorkerManager`
+* Cannot perform constructor injection on `Worker` class
+=> use factory pattern
+* Do not want to implement those factories manually
+=> use `AssistedInject`
+
+Thanks to:
+[Dagger 2 setup with WorkManager](https://medium.com/@nlg.tuan.kiet/dagger-2-setup-with-workmanager-a-complete-step-by-step-guild-bb9f474bde37)
+
+---
+
+## Room
+> Notice: Until we perform some concrete operation, such as invoking a @Dao method that hits the database, your database will not be created.

@@ -8,18 +8,10 @@ import com.jiujiu.mvvmTemplate.R;
 import com.jiujiu.mvvmTemplate.databinding.FragmentProductsBinding;
 import com.jiujiu.mvvmTemplate.ui.base.BaseFragment;
 
-import javax.inject.Inject;
-
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
-
 
 public class ProductsFragment extends BaseFragment<FragmentProductsBinding, ProductsFragViewModel> {
     private static final String TAG = "ProductsFragment";
     private static ProductsFragment mFragment;
-
-    @Inject
-    ViewModelProvider.Factory factory;
 
     public static ProductsFragment getInstance() {
         if (mFragment == null) {
@@ -31,7 +23,6 @@ public class ProductsFragment extends BaseFragment<FragmentProductsBinding, Prod
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
 
         setupViewModel();
 
@@ -56,9 +47,8 @@ public class ProductsFragment extends BaseFragment<FragmentProductsBinding, Prod
     }
 
     @Override
-    protected ProductsFragViewModel generateViewmodel() {
-        return ViewModelProviders.of(this, factory).get(ProductsFragViewModel.class);
+    protected Class<ProductsFragViewModel> getViewModelType() {
+        return ProductsFragViewModel.class;
     }
-
 
 }

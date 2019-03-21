@@ -5,15 +5,30 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import javax.inject.Inject;
+
 import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 import dagger.android.AndroidInjection;
+import dagger.android.AndroidInjector;
+import dagger.android.DispatchingAndroidInjector;
+import dagger.android.support.HasSupportFragmentInjector;
 
-public abstract class BaseActivity<T extends ViewDataBinding, V extends ViewModel> extends AppCompatActivity {
+//public abstract class BaseActivity<T extends ViewDataBinding, V extends ViewModel> extends AppCompatActivity implements HasSupportFragmentInjector {
+public abstract class BaseActivity<T extends ViewDataBinding, V extends ViewModel> extends AppCompatActivity implements HasSupportFragmentInjector {
+
+    @Inject
+    ViewModelProvider.Factory factory;
+
+    @Inject
+    DispatchingAndroidInjector<Fragment> fragmentDispatchingAndroidInjector;
 
     private T mBinding;
     private V viewModel;
@@ -27,10 +42,11 @@ public abstract class BaseActivity<T extends ViewDataBinding, V extends ViewMode
     }
 
     private void performViewModel() {
-        viewModel = generateViewModel();
+        viewModel = ViewModelProviders.of(this, factory).get(getViewModelClassType());
     }
 
-    protected abstract V generateViewModel();
+    //    protected abstract V generateViewModel();
+    protected abstract Class<V> getViewModelClassType();
 
     @LayoutRes
     public abstract int getLayoutId();
@@ -65,5 +81,10 @@ public abstract class BaseActivity<T extends ViewDataBinding, V extends ViewMode
                 imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
             }
         }
+    }
+
+    @Override
+    public AndroidInjector<Fragment> supportFragmentInjector() {
+        return fragmentDispatchingAndroidInjector;
     }
 }

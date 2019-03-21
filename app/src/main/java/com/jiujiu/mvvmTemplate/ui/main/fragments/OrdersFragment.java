@@ -9,18 +9,10 @@ import com.jiujiu.mvvmTemplate.R;
 import com.jiujiu.mvvmTemplate.databinding.FragmentOrdersBinding;
 import com.jiujiu.mvvmTemplate.ui.base.BaseFragment;
 
-import javax.inject.Inject;
-
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
-
 
 public class OrdersFragment extends BaseFragment<FragmentOrdersBinding, OrdersFragViewModel> {
 
     private static OrdersFragment mFragment;
-
-    @Inject
-    ViewModelProvider.Factory factory;
 
     public static OrdersFragment getInstance() {
         if (mFragment == null) {
@@ -44,8 +36,14 @@ public class OrdersFragment extends BaseFragment<FragmentOrdersBinding, OrdersFr
         return R.layout.fragment_orders;
     }
 
+//    @Override
+//    protected OrdersFragViewModel generateViewmodel() {
+//        return ViewModelProviders.of(this, factory).get(OrdersFragViewModel.class);
+//    }
+
     @Override
-    protected OrdersFragViewModel generateViewmodel() {
-        return ViewModelProviders.of(this, factory).get(OrdersFragViewModel.class);
+    protected Class<OrdersFragViewModel> getViewModelType() {
+        return OrdersFragViewModel.class;
     }
+
 }

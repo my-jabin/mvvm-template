@@ -5,13 +5,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import javax.inject.Inject;
+
 import androidx.annotation.LayoutRes;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 import dagger.android.support.AndroidSupportInjection;
 
 public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseViewModel> extends Fragment {
+
+    @Inject
+    ViewModelProvider.Factory factory;
 
     private T mBinding;
     private V mViewModel;
@@ -46,7 +53,12 @@ public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseView
     @LayoutRes
     protected abstract int getLayoutId();
 
-    protected abstract V generateViewmodel();
+    private V generateViewmodel() {
+        return ViewModelProviders.of(this, factory).get(getViewModelType());
+    }
+
+    protected abstract Class<V> getViewModelType();
+
 
     public T getBinding() {
         return mBinding;

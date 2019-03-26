@@ -1,13 +1,13 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.jiujiu.mvvmTemplate.ui.main.fragments.OrdersFragment">
+    tools:context="com.jiujiu.mvvmTemplate.ui.orders.OrdersFragment">
 
     <data>
 
         <variable
             name="viewModel"
-            type="com.jiujiu.mvvmTemplate.ui.main.fragments.OrdersFragViewModel" />
+            type="com.jiujiu.mvvmTemplate.ui.orders.OrdersFragViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

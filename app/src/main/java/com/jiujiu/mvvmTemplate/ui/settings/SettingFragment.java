@@ -2,13 +2,13 @@ package com.jiujiu.mvvmTemplate.ui.settings;
 
 import android.os.Bundle;
 
-import com.jiujiu.mvvmTemplate.R;
-
 import androidx.preference.EditTextPreference;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceFragmentCompat;
+
+import com.jiujiu.mvvmTemplate.R;
 
 public class SettingFragment extends PreferenceFragmentCompat {
 

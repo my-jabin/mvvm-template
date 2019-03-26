@@ -1,11 +1,12 @@
 package com.jiujiu.mvvmTemplate.di.module;
 
+import androidx.work.WorkerFactory;
+
 import com.jiujiu.mvvmTemplate.di.MyWorkerFactory;
 import com.jiujiu.mvvmTemplate.di.scope.WorkerKey;
 import com.jiujiu.mvvmTemplate.worker.CustomWorkerFactory;
 import com.jiujiu.mvvmTemplate.worker.PrePopulateDataWorker;
 
-import androidx.work.WorkerFactory;
 import dagger.Binds;
 import dagger.Module;
 import dagger.multibindings.IntoMap;

@@ -2,13 +2,13 @@ package com.jiujiu.mvvmTemplate.worker;
 
 import android.content.Context;
 
-import com.jiujiu.mvvmTemplate.data.DataManager;
-import com.squareup.inject.assisted.Assisted;
-import com.squareup.inject.assisted.AssistedInject;
-
 import androidx.annotation.NonNull;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
+
+import com.jiujiu.mvvmTemplate.data.DataManager;
+import com.squareup.inject.assisted.Assisted;
+import com.squareup.inject.assisted.AssistedInject;
 
 public class PrePopulateDataWorker extends Worker {
     private static final String TAG = "PrePopulateDataWorker";

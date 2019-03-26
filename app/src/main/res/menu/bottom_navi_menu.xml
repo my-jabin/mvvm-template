@@ -12,4 +12,9 @@
         android:icon="@drawable/ic_order_black_24dp"
         android:title="@string/orders" />
 
+    <item
+        android:id="@+id/bottom_navi_customer"
+        android:icon="@drawable/ic_person_customer_24dp"
+        android:title="@string/customer" />
+
 </menu>

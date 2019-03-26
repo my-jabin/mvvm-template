@@ -3,6 +3,13 @@ package com.jiujiu.mvvmTemplate.di.module;
 import android.app.Application;
 import android.content.Context;
 
+import androidx.annotation.NonNull;
+import androidx.room.Room;
+import androidx.room.RoomDatabase;
+import androidx.sqlite.db.SupportSQLiteDatabase;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
+
 import com.jiujiu.mvvmTemplate.data.local.AppDatabase;
 import com.jiujiu.mvvmTemplate.data.local.dao.ProductDao;
 import com.jiujiu.mvvmTemplate.di.scope.DatabaseInfo;
@@ -12,12 +19,6 @@ import com.jiujiu.mvvmTemplate.worker.PrePopulateDataWorker;
 
 import javax.inject.Singleton;
 
-import androidx.annotation.NonNull;
-import androidx.room.Room;
-import androidx.room.RoomDatabase;
-import androidx.sqlite.db.SupportSQLiteDatabase;
-import androidx.work.OneTimeWorkRequest;
-import androidx.work.WorkManager;
 import dagger.Module;
 import dagger.Provides;
 

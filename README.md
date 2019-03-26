@@ -1,21 +1,31 @@
 # mvvm-template
-A template for quickly building a project that implements MVVM architecture using ViewModel,  Room, Dagger2, RxJava2, Data Binding, WorkManager.
+A template for quickly building a project that implements MVVM architecture using ViewModel,  Room, Dagger2, RxJava2, Data Binding, WorkManager, Navigation.
 
 ## Requirement:
 Android Studio 3.3+
 
 ## Architecture
+* Single-Activity-Multiple-Fragments
+
+* MVVM architecture
+
 ![](images/mvvm-architecture.png)
 
 ## How to use it
-1. Add/Modify the entities class. In the template, there is only a `User` entity. Add your own entity. Then create a corresponding `Dao` and `Repository` class, add `Dao` to `AppDatabase` class.
+1. Add/Modify the entities class. In the template, there is only a `Product` entity. Add your own entity. Then create a corresponding `Dao` and `Repository` class, add `Dao` to `AppDatabase` class.
 2. Dependency injection:
     * Your activities need to be added in the `ActivityBuilder` class.
     * Your `ViewModel` class need to be added in the `ViewModelModule` class.
     * If any application associated dependencies is required, could be provided in the `AppModule` class
-    * Any activity associated dependencies could be provided in the `xxxActivityModule` class
+    * Any activity/fragment associated dependencies could be provided in the `xxxActivityModule` class or `xxxFragmentModule`
     * Binds your own `Worker` in the `WorkerBindingModule`, do not forget the Factory interface, see the example class `PrePopulateDataWorker`.
-3. Change the UI components.
+3. In this template, single-activity-multiple-fragments architecture is using in the whole project. If you use the same architecture, add your fragment in the `MainActivityModule` and create your `xxxFragmentModule`
+4. Change the UI components.
+5. Navigation graph:
+  * Start destination is the `MainFragment`
+  * One global action to `SettingFragment`
+
+![Navigation Graph](images/nav-graph.png)
 
 
 ## Dagger 2

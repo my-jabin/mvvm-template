@@ -1,4 +1,9 @@
-package com.jiujiu.mvvmTemplate.ui.main.fragments;
+package com.jiujiu.mvvmTemplate.ui.products;
+
+import android.util.Log;
+
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.jiujiu.mvvmTemplate.data.DataManager;
 import com.jiujiu.mvvmTemplate.data.model.Product;
@@ -8,8 +13,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import io.reactivex.schedulers.Schedulers;
 
 public class ProductsFragViewModel extends BaseViewModel {
@@ -20,16 +23,19 @@ public class ProductsFragViewModel extends BaseViewModel {
     @Inject
     public ProductsFragViewModel(DataManager dataManager) {
         super(dataManager);
+        loadProducts();
     }
 
-
-    public void loadProducts() {
+    private void loadProducts() {
         getCompositeDisposable().add(
                 getDataManager()
                         .getAllProducts()
                         .subscribeOn(Schedulers.io())
                         .subscribe(
-                                products -> productsLiveData.postValue(products)
+                                products -> {
+                                    Log.d(TAG, "loadProducts: finish. Size = " + products.size());
+                                    productsLiveData.postValue(products);
+                                }
                         )
         );
     }

@@ -1,9 +1,10 @@
 package com.jiujiu.mvvmTemplate.di.scope;
 
+import androidx.lifecycle.ViewModel;
+
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-import androidx.lifecycle.ViewModel;
 import dagger.MapKey;
 
 @Retention(RetentionPolicy.RUNTIME)

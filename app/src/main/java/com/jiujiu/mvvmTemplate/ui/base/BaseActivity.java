@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
-import javax.inject.Inject;
-
 import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,12 +14,14 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
+
+import javax.inject.Inject;
+
 import dagger.android.AndroidInjection;
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.support.HasSupportFragmentInjector;
 
-//public abstract class BaseActivity<T extends ViewDataBinding, V extends ViewModel> extends AppCompatActivity implements HasSupportFragmentInjector {
 public abstract class BaseActivity<T extends ViewDataBinding, V extends ViewModel> extends AppCompatActivity implements HasSupportFragmentInjector {
 
     @Inject
@@ -45,7 +45,6 @@ public abstract class BaseActivity<T extends ViewDataBinding, V extends ViewMode
         viewModel = ViewModelProviders.of(this, factory).get(getViewModelClassType());
     }
 
-    //    protected abstract V generateViewModel();
     protected abstract Class<V> getViewModelClassType();
 
     @LayoutRes
@@ -57,6 +56,7 @@ public abstract class BaseActivity<T extends ViewDataBinding, V extends ViewMode
 
     public void performDataBinding() {
         mBinding = DataBindingUtil.setContentView(this, getLayoutId());
+        mBinding.setLifecycleOwner(this);
         viewModel = viewModel == null ? getViewModel() : viewModel;
         mBinding.setVariable(getBindingVariableId(), viewModel);
         mBinding.executePendingBindings();

@@ -2,6 +2,12 @@ package com.jiujiu.mvvmTemplate.di;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.work.ListenableWorker;
+import androidx.work.WorkerFactory;
+import androidx.work.WorkerParameters;
+
 import com.jiujiu.mvvmTemplate.worker.CustomWorkerFactory;
 
 import java.util.Map;
@@ -9,12 +15,6 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Provider;
 import javax.inject.Singleton;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.work.ListenableWorker;
-import androidx.work.WorkerFactory;
-import androidx.work.WorkerParameters;
 
 @Singleton
 public class MyWorkerFactory extends WorkerFactory {

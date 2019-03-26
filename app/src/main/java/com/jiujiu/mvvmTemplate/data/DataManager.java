@@ -2,6 +2,7 @@ package com.jiujiu.mvvmTemplate.data;
 
 import com.jiujiu.mvvmTemplate.data.model.Product;
 import com.jiujiu.mvvmTemplate.data.repository.ProductRepository;
+import com.jiujiu.mvvmTemplate.util.AppConstant;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import io.reactivex.Maybe;
 import io.reactivex.Observable;
 
 @Singleton
@@ -21,6 +23,7 @@ public class DataManager {
     public DataManager(AppPreference preference, ProductRepository productRepository) {
         mPreference = preference;
         this.mProductRepository = productRepository;
+        setCurrentUserName(AppConstant.USERNAME);
     }
 
     public String getCurrentUserName() {
@@ -45,5 +48,9 @@ public class DataManager {
 
     public Observable<List<Product>> getAllProducts() {
         return this.mProductRepository.loadAllProducts();
+    }
+
+    public Maybe<Product> getProductById(Long id) {
+        return this.mProductRepository.loadProductById(id);
     }
 }

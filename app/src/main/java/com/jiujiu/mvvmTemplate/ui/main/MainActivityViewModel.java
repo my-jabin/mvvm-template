@@ -12,8 +12,4 @@ public class MainActivityViewModel extends BaseViewModel {
         super(dataManager);
     }
 
-    public String getCurrentUserName() {
-        return getDataManager().getCurrentUserName();
-    }
-
 }

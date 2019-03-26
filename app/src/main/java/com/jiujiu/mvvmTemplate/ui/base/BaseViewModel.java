@@ -1,8 +1,9 @@
 package com.jiujiu.mvvmTemplate.ui.base;
 
+import androidx.lifecycle.ViewModel;
+
 import com.jiujiu.mvvmTemplate.data.DataManager;
 
-import androidx.lifecycle.ViewModel;
 import io.reactivex.disposables.CompositeDisposable;
 
 public class BaseViewModel extends ViewModel {

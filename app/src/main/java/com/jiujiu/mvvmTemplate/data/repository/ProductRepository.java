@@ -10,6 +10,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import io.reactivex.Maybe;
 import io.reactivex.Observable;
 
 @Singleton
@@ -32,5 +33,9 @@ public class ProductRepository {
 
     public Observable<List<Product>> loadAllProducts() {
         return productDao.loadAllProducts();
+    }
+
+    public Maybe<Product> loadProductById(Long id) {
+        return productDao.getProductById(id);
     }
 }

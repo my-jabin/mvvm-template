@@ -16,7 +16,7 @@ public class ProductsFragment extends BaseFragment<FragmentProductsBinding, Prod
     private static final String TAG = "ProductsFragment";
     private static ProductsFragment mFragment;
 
-    private ProductsRecyclerAdapter mAdapter;
+    private ProductsRecyclerListerAdapter mAdapter;
 
     public ProductsFragment() {
         Log.d(TAG, "ProductsFragment: constructors");
@@ -38,14 +38,14 @@ public class ProductsFragment extends BaseFragment<FragmentProductsBinding, Prod
     }
 
     private void setupLayout() {
-        mAdapter = new ProductsRecyclerAdapter();
+        mAdapter = new ProductsRecyclerListerAdapter();
         getBinding().rvProducts.setAdapter(mAdapter);
         getBinding().rvProducts.addOnItemTouchListener(new RecyclerView.SimpleOnItemTouchListener() {
         });
     }
 
     private void setupViewModel() {
-        getViewModel().getProductLiveData().observe(this, products -> this.mAdapter.setmData(products));
+        getViewModel().getProductLiveData().observe(this, products -> this.mAdapter.submitList(products));
     }
 
     @Override

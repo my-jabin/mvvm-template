@@ -15,6 +15,10 @@ public class PrePopulateDataWorker extends Worker {
 
     private DataManager dataManager;
 
+    public PrePopulateDataWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
+        super(context, workerParams);
+    }
+
     @AssistedInject
     public PrePopulateDataWorker(@Assisted @NonNull Context context, @Assisted @NonNull WorkerParameters workerParams, DataManager dataManager) {
         super(context, workerParams);

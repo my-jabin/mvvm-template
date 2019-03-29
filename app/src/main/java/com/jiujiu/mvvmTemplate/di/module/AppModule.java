@@ -53,8 +53,11 @@ public class AppModule {
                     @Override
                     public void onCreate(@NonNull SupportSQLiteDatabase db) {
                         super.onCreate(db);
+                        // todo: enable workmanager
+                        //
                         OneTimeWorkRequest request = new OneTimeWorkRequest.Builder(PrePopulateDataWorker.class).build();
                         WorkManager.getInstance().enqueue(request);
+
                     }
                 }
         ).build();

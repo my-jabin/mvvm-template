@@ -25,12 +25,12 @@ public class ProductsRecyclerListerAdapter extends BaseRecyclerListAdapter<Produ
     public void bindViewHolder(ProductItemBinding binding, int position) {
         Product p = getItem(position);
         if (p == null) return;
-        binding.tvProductItemName.setText(p.name);
+        binding.setProduct(p);
         binding.setItemClickListener(v -> onProductItemClick(v, p));
     }
 
     private void onProductItemClick(View v, Product p) {
-        MainFragmentDirections.ActionMainFragmentToProductDetailFragment action = MainFragmentDirections.actionMainFragmentToProductDetailFragment(p.id, p.name);
+        MainFragmentDirections.ActionMainFragmentToProductDetailFragment action = MainFragmentDirections.actionMainFragmentToProductDetailFragment(p.getId(), p.getName());
         Navigation.findNavController(v).navigate(action);
     }
 
@@ -42,14 +42,14 @@ public class ProductsRecyclerListerAdapter extends BaseRecyclerListAdapter<Produ
     public static final DiffUtil.ItemCallback<Product> diff = new DiffUtil.ItemCallback<Product>() {
         @Override
         public boolean areItemsTheSame(@NonNull Product oldItem, @NonNull Product newItem) {
-            return Objects.equals(oldItem.id, newItem.id);
+            return Objects.equals(oldItem.getId(), newItem.getId());
         }
 
         @Override
         public boolean areContentsTheSame(@NonNull Product oldItem, @NonNull Product newItem) {
-            return Objects.equals(oldItem.name, newItem.name) &&
-                    Objects.equals(oldItem.brand, newItem.brand) &&
-                    Objects.equals(oldItem.price, newItem.price);
+            return Objects.equals(oldItem.getName(), newItem.getName()) &&
+                    Objects.equals(oldItem.getBrand(), newItem.getBrand()) &&
+                    Objects.equals(oldItem.getPrice(), newItem.getPrice());
         }
     };
 }

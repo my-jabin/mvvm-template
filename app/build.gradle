@@ -1,4 +1,7 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 apply plugin: "androidx.navigation.safeargs"
 
 android {
@@ -40,17 +43,20 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0-alpha02'
 
     //dagger2
+    // todo: delete unuseful dependencies
     implementation 'com.google.dagger:dagger:2.21'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.21'
+    kapt 'com.google.dagger:dagger-compiler:2.21'
     implementation 'com.google.dagger:dagger-android-support:2.21'
     annotationProcessor 'com.google.dagger:dagger-android-processor:2.21'
+    kapt 'com.google.dagger:dagger-android-processor:2.21'
 
     // ViewModel and LiveData
     implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0-alpha02'
 
     // Room
     implementation 'androidx.room:room-runtime:2.1.0-alpha04'
-    annotationProcessor 'androidx.room:room-compiler:2.1.0-alpha04'
+    kapt 'androidx.room:room-compiler:2.1.0-alpha04'
     implementation 'androidx.room:room-rxjava2:2.1.0-alpha04'
 
     // reactiveX
@@ -62,14 +68,26 @@ dependencies {
 
     // assistedInject
     compileOnly 'com.squareup.inject:assisted-inject-annotations-dagger2:0.3.3'
+    kapt 'com.squareup.inject:assisted-inject-processor-dagger2:0.3.3'
     annotationProcessor 'com.squareup.inject:assisted-inject-processor-dagger2:0.3.3'
 
     // navigation
-    implementation "androidx.navigation:navigation-fragment:2.1.0-alpha01" // For Kotlin use navigation-fragment-ktx
+    implementation "androidx.navigation:navigation-fragment:2.1.0-alpha01"
+    // For Kotlin use navigation-fragment-ktx
     implementation "androidx.navigation:navigation-ui:2.1.0-alpha01"
-    implementation 'androidx.cardview:cardview:1.0.0'// For Kotlin use navigation-ui-ktx
+    // For Kotlin use navigation-ui-ktx
+    implementation 'androidx.cardview:cardview:1.0.0'
+
+    // kotlin
+    implementation "androidx.core:core-ktx:1.0.1"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.1.0-alpha02"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
 
 
     // Android Debug Database
-//    debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
+    debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
+}
+repositories {
+    mavenCentral()
 }

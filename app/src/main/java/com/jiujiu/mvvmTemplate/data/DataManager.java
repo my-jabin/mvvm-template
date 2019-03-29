@@ -37,10 +37,7 @@ public class DataManager {
     public void prePupulateData() {
         List<Product> products = new ArrayList<>();
         for (int i = 1; i <= 5; i++) {
-            Product p = new Product();
-            p.name = "Product Name " + i;
-            p.price = i * 10;
-            p.brand = "Brand " + i;
+            Product p = new Product(null, "Product Name " + i, "Brand " + i, i * 10.0);
             products.add(p);
         }
         mProductRepository.insert(products.toArray(new Product[products.size()]));

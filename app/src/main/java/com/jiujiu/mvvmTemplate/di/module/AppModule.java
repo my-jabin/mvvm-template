@@ -10,6 +10,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
+import com.jiujiu.mvvmTemplate.MvvmApp;
 import com.jiujiu.mvvmTemplate.data.local.AppDatabase;
 import com.jiujiu.mvvmTemplate.data.local.dao.ProductDao;
 import com.jiujiu.mvvmTemplate.di.scope.DatabaseInfo;
@@ -19,6 +20,7 @@ import com.jiujiu.mvvmTemplate.worker.PrePopulateDataWorker;
 
 import javax.inject.Singleton;
 
+import dagger.Binds;
 import dagger.Module;
 import dagger.Provides;
 
@@ -39,7 +41,7 @@ public class AppModule {
 
     @Provides
     @Singleton
-    Context provideContext(Application application) {
+    Context provideContext(MvvmApp application) {
         return application;
     }
 

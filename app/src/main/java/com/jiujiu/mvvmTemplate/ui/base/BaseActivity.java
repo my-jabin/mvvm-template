@@ -20,22 +20,19 @@ import javax.inject.Inject;
 import dagger.android.AndroidInjection;
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
+import dagger.android.support.DaggerAppCompatActivity;
 import dagger.android.support.HasSupportFragmentInjector;
 
-public abstract class BaseActivity<T extends ViewDataBinding, V extends ViewModel> extends AppCompatActivity implements HasSupportFragmentInjector {
+public abstract class BaseActivity<T extends ViewDataBinding, V extends ViewModel> extends DaggerAppCompatActivity {
 
     @Inject
     ViewModelProvider.Factory factory;
-
-    @Inject
-    DispatchingAndroidInjector<Fragment> fragmentDispatchingAndroidInjector;
 
     private T mBinding;
     private V viewModel;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        performDenpendencyInjection();
         super.onCreate(savedInstanceState);
         performViewModel();
         performDataBinding();
@@ -62,11 +59,6 @@ public abstract class BaseActivity<T extends ViewDataBinding, V extends ViewMode
         mBinding.executePendingBindings();
     }
 
-
-    public void performDenpendencyInjection() {
-        AndroidInjection.inject(this);
-    }
-
     public abstract int getBindingVariableId();
 
     public T getBinding() {
@@ -83,8 +75,4 @@ public abstract class BaseActivity<T extends ViewDataBinding, V extends ViewMode
         }
     }
 
-    @Override
-    public AndroidInjector<Fragment> supportFragmentInjector() {
-        return fragmentDispatchingAndroidInjector;
-    }
 }

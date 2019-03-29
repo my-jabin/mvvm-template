@@ -15,8 +15,9 @@ import androidx.lifecycle.ViewModelProviders;
 import javax.inject.Inject;
 
 import dagger.android.support.AndroidSupportInjection;
+import dagger.android.support.DaggerFragment;
 
-public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseViewModel> extends Fragment {
+public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseViewModel> extends DaggerFragment {
 
     @Inject
     ViewModelProvider.Factory factory;
@@ -26,15 +27,9 @@ public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseView
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        performDenpendencyInjection();
         super.onCreate(savedInstanceState);
         mViewModel = generateViewmodel();
     }
-
-    private void performDenpendencyInjection() {
-        AndroidSupportInjection.inject(this);
-    }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

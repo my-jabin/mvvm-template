@@ -1,7 +1,5 @@
 package com.jiujiu.mvvmTemplate.di.component;
 
-import android.app.Application;
-
 import com.jiujiu.mvvmTemplate.MvvmApp;
 import com.jiujiu.mvvmTemplate.di.builder.ActivityBuilder;
 import com.jiujiu.mvvmTemplate.di.module.AppModule;
@@ -9,8 +7,8 @@ import com.jiujiu.mvvmTemplate.di.module.WorkerAssistedInjectModule;
 
 import javax.inject.Singleton;
 
-import dagger.BindsInstance;
 import dagger.Component;
+import dagger.android.AndroidInjector;
 import dagger.android.support.AndroidSupportInjectionModule;
 
 /**
@@ -30,16 +28,10 @@ import dagger.android.support.AndroidSupportInjectionModule;
         WorkerAssistedInjectModule.class,
         AppModule.class,
         ActivityBuilder.class})
-public interface AppComponent {
+public interface AppComponent extends AndroidInjector<MvvmApp> {
 
     @Component.Builder
-    interface Builder {
-        @BindsInstance
-        Builder application(Application application);
-
-        AppComponent build();
+    abstract class Builder extends AndroidInjector.Builder<MvvmApp> {
     }
-
-    void inject(MvvmApp app);
 
 }

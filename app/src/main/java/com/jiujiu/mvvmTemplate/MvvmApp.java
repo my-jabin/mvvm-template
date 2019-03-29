@@ -1,9 +1,5 @@
 package com.jiujiu.mvvmTemplate;
 
-import android.app.Activity;
-import android.app.Application;
-
-import androidx.fragment.app.Fragment;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 import androidx.work.Configuration;
 import androidx.work.WorkManager;
@@ -18,17 +14,9 @@ import java.util.HashMap;
 import javax.inject.Inject;
 
 import dagger.android.AndroidInjector;
-import dagger.android.DispatchingAndroidInjector;
-import dagger.android.HasActivityInjector;
-import dagger.android.support.HasSupportFragmentInjector;
+import dagger.android.DaggerApplication;
 
-public class MvvmApp extends Application implements HasActivityInjector, HasSupportFragmentInjector {
-
-    @Inject
-    DispatchingAndroidInjector<Activity> activityDispatchingAndroidInjector;
-
-    @Inject
-    DispatchingAndroidInjector<Fragment> supportFragmentInjector;
+public class MvvmApp extends DaggerApplication {
 
     @Inject
     WorkerFactory myWorkerFactory;
@@ -40,27 +28,15 @@ public class MvvmApp extends Application implements HasActivityInjector, HasSupp
     public void onCreate() {
         super.onCreate();
 
-        DaggerAppComponent.builder()
-                .application(this)
-                .build()
-                .inject(this);
-
         WorkManager.initialize(this, new Configuration.Builder().setWorkerFactory(myWorkerFactory).build());
-
 
         setInMemoryRoomDatabases(mDatabase.getOpenHelper().getWritableDatabase());
 
     }
 
-
     @Override
-    public AndroidInjector<Activity> activityInjector() {
-        return activityDispatchingAndroidInjector;
-    }
-
-    @Override
-    public AndroidInjector<androidx.fragment.app.Fragment> supportFragmentInjector() {
-        return supportFragmentInjector;
+    protected AndroidInjector<? extends MvvmApp> applicationInjector() {
+        return DaggerAppComponent.builder().create(this);
     }
 
     // for in memory database debugging

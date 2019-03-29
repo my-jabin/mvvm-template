@@ -1,5 +1,6 @@
 package com.jiujiu.mvvmTemplate.ui.products.details;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.jiujiu.mvvmTemplate.data.DataManager;
@@ -14,7 +15,7 @@ public class ProductDetailViewModel extends BaseViewModel {
 
     private static final String TAG = "ProductDetailViewModel";
 
-    public MutableLiveData<Product> productLiveData = new MutableLiveData<>();
+    private MutableLiveData<Product> mProductLiveData = new MutableLiveData<>();
 
     @Inject
     public ProductDetailViewModel(DataManager dataManager) {
@@ -26,10 +27,15 @@ public class ProductDetailViewModel extends BaseViewModel {
                 this.getDataManager().getProductById(productId)
                         .subscribeOn(Schedulers.io())
                         .subscribe(product -> {
-                            productLiveData.postValue(product);
+                            if (product != null)
+                                mProductLiveData.postValue(product);
                         }, throwable -> {
                             throwable.printStackTrace();
                         })
         );
+    }
+
+    public LiveData<Product> getProductLiveData() {
+        return mProductLiveData;
     }
 }

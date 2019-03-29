@@ -5,7 +5,6 @@ import com.jiujiu.mvvmTemplate.data.model.Product
 import io.reactivex.Maybe
 import io.reactivex.Observable
 
-
 @Dao
 interface ProductDao {
 

@@ -13,9 +13,9 @@ data class Product(
         @PrimaryKey(autoGenerate = true)
         var id: Long?,
 
-        var name: String? = null,
+        var name: String,
 
-        var brand: String,
+        var brand: String?,
 
         var price: Double? = 0.toDouble()
 

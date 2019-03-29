@@ -21,8 +21,8 @@ class ProductRepository @Inject constructor(private val productDao: ProductDao) 
         return productDao.loadAllProducts()
     }
 
-    fun loadProductById(id: Long): Maybe<Product> {
-        return productDao.getProductById(id)
+    fun loadProductById(id: Long?): Maybe<Product> {
+        return productDao.getProductById(id!!)
     }
 
     companion object {

@@ -2,7 +2,8 @@
 A template for quickly building a project that implements MVVM architecture using ViewModel,  Room, Dagger2, RxJava2, Data Binding, WorkManager, Navigation.
 
 ## Requirement:
-Android Studio 3.3+
+* Android Studio 3.3+
+* [Kotlin](https://github.com/my-jabin/mvvm-template/tree/kotlin) / Java
 
 ## Architecture
 * Single-Activity-Multiple-Fragments

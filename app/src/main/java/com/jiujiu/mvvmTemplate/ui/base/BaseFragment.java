@@ -8,13 +8,11 @@ import android.view.ViewGroup;
 import androidx.annotation.LayoutRes;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import javax.inject.Inject;
 
-import dagger.android.support.AndroidSupportInjection;
 import dagger.android.support.DaggerFragment;
 
 public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseViewModel> extends DaggerFragment {

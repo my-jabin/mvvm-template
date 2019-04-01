@@ -7,21 +7,15 @@ import android.view.inputmethod.InputMethodManager;
 
 import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import javax.inject.Inject;
 
-import dagger.android.AndroidInjection;
-import dagger.android.AndroidInjector;
-import dagger.android.DispatchingAndroidInjector;
 import dagger.android.support.DaggerAppCompatActivity;
-import dagger.android.support.HasSupportFragmentInjector;
 
 public abstract class BaseActivity<T extends ViewDataBinding, V extends ViewModel> extends DaggerAppCompatActivity {
 

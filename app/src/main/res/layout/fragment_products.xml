@@ -4,6 +4,7 @@
     tools:context="com.jiujiu.mvvmTemplate.ui.products.ProductsFragment">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.jiujiu.mvvmTemplate.ui.products.ProductsFragViewModel" />

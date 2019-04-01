@@ -28,7 +28,7 @@ data class Product(
     var updateAt: Calendar? = Calendar.getInstance(Locale.getDefault())
 
     @Ignore
-    var createdAtDataString = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(createdAt?.time)
+    var createdAtDataString : String = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(createdAt?.time)
 }
 
 

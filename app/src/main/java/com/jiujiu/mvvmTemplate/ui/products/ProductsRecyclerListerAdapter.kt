@@ -2,7 +2,7 @@ package com.jiujiu.mvvmTemplate.ui.products
 
 import android.view.View
 import androidx.annotation.NonNull
-import androidx.navigation.Navigation
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import com.jiujiu.mvvmTemplate.R
 import com.jiujiu.mvvmTemplate.data.model.Product
@@ -25,7 +25,7 @@ class ProductsRecyclerListerAdapter : BaseRecyclerListAdapter<Product, ProductIt
 
     private fun onProductItemClick(v: View, @NonNull p: Product) {
         val action = MainFragmentDirections.actionMainFragmentToProductDetailFragment(p.id!!, p.name)
-        Navigation.findNavController(v).navigate(action)
+        v.findNavController().navigate(action)
     }
 
 }

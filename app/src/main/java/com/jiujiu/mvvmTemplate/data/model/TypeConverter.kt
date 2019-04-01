@@ -5,8 +5,8 @@ import java.util.*
 
 class Converters {
     @TypeConverter
-    fun fromCalenderToLong(calender: Calendar) = calender.timeInMillis
+    fun fromCalenderToLong(calendar: Calendar) = calendar.timeInMillis
 
     @TypeConverter
-    fun fromLongToCalender(time: Long) = Calendar.getInstance().apply { timeInMillis = time }
+    fun fromLongToCalender(time: Long) : Calendar = Calendar.getInstance().apply { timeInMillis = time }
 }

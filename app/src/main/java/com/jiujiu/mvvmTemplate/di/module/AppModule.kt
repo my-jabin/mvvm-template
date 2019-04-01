@@ -41,7 +41,7 @@ class AppModule {
     @Provides
     @Singleton
     fun provideAppDatabase(context: Context, @DatabaseInfo databaseName: String): AppDatabase {
-        //        return Room.databaseBuilder(context, AppDatabase.class, databaseName).addCallback(
+        // return Room.databaseBuilder(context, AppDatabase.class, databaseName).addCallback(
         // in memory database
         return Room.inMemoryDatabaseBuilder(context, AppDatabase::class.java).addCallback(
                 object : RoomDatabase.Callback() {

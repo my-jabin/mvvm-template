@@ -12,8 +12,9 @@ import javax.inject.Provider
 import javax.inject.Singleton
 
 @Singleton
-class MyWorkerFactory @Inject
-constructor(private val workerFactories: MutableMap<Class<out ListenableWorker>, Provider<CustomWorkerFactory>>) : WorkerFactory() {
+class MyWorkerFactory @Inject constructor(
+        private val workerFactories: MutableMap<Class<out ListenableWorker>, Provider<CustomWorkerFactory>>
+) : WorkerFactory() {
 
     override fun createWorker(appContext: Context, workerClassName: String, workerParameters: WorkerParameters): ListenableWorker? {
         var listenableWorker: ListenableWorker? = null

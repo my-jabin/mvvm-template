@@ -4,14 +4,6 @@ import androidx.lifecycle.ViewModel
 
 import com.jiujiu.mvvmTemplate.data.DataManager
 
-import io.reactivex.disposables.CompositeDisposable
+import org.jetbrains.anko.AnkoLogger
 
-open class BaseViewModel(protected val dataManager: DataManager) : ViewModel() {
-
-    val compositeDisposable: CompositeDisposable = CompositeDisposable()
-
-    override fun onCleared() {
-        compositeDisposable.dispose()
-        super.onCleared()
-    }
-}
+open class BaseViewModel(protected val dataManager: DataManager) : ViewModel(), AnkoLogger

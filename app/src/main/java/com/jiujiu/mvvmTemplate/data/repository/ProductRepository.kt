@@ -1,31 +1,27 @@
 package com.jiujiu.mvvmTemplate.data.repository
 
-import android.util.Log
+import androidx.lifecycle.LiveData
 import com.jiujiu.mvvmTemplate.data.local.dao.ProductDao
 import com.jiujiu.mvvmTemplate.data.model.Product
-import io.reactivex.Maybe
-import io.reactivex.Observable
+import org.jetbrains.anko.AnkoLogger
+import org.jetbrains.anko.info
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class ProductRepository @Inject constructor(private val productDao: ProductDao) {
+class ProductRepository @Inject constructor(private val productDao: ProductDao) : AnkoLogger {
 
     fun insert(vararg productList: Product) {
         productDao.insert(*productList)
-        Log.d(TAG, "insert products: " + productList.size + " item(s)")
+        info( "insert products: " + productList.size + " item(s)")
     }
 
-
-    fun loadAllProducts(): Observable<List<Product>> {
+    fun loadAllProducts(): LiveData<List<Product>> {
         return productDao.loadAllProducts()
     }
 
-    fun loadProductById(id: Long?): Maybe<Product> {
+    fun loadProductById(id: Long?): LiveData<Product> {
         return productDao.getProductById(id!!)
     }
 
-    companion object {
-        private val TAG by lazy { ProductRepository::class.simpleName }
-    }
 }

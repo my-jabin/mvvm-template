@@ -1,8 +1,9 @@
 # mvvm-template
-A template for quickly building a project that implements MVVM architecture using ViewModel,  Room, Dagger2, RxJava2, Data Binding, WorkManager, Navigation.
+A template for quickly building a project that implements MVVM architecture using ViewModel,  Room, Dagger2, Data Binding, WorkManager, Navigation.
 
 ## Requirement:
-Android Studio 3.3+
+* Android Studio 3.3+
+* Kotlin / [Java](https://github.com/my-jabin/mvvm-template)
 
 ## Architecture
 * Single-Activity-Multiple-Fragments
@@ -44,27 +45,22 @@ Android Studio 3.3+
 ---
 
 In the `AppComponent` class
-``` java
+``` kotlin
 @Singleton
-@Component(modules = {AndroidInjectionModule.class,
-        AppModule.class,
-        ActivityBuilder.class})
-public interface AppComponent {
+@Component(modules = [
+    AndroidSupportInjectionModule::class,
+    WorkerAssistedInjectModule::class,
+    AppModule::class,
+    ActivityBuilder::class])
+interface AppComponent : AndroidInjector<MvvmApp> {
 
     @Component.Builder
-    interface Builder {
-        @BindsInstance
-        Builder application(Application application);
-
-        AppComponent build();
-    }
-
-    void inject(MvvmApp app);
+    abstract class Builder : AndroidInjector.Builder<MvvmApp>()
 
 }
 ```
 
-* `AndroidInjectionModule`. The description of this module from official document is:
+* `AndroidSupportInjectionModule`. is just an alias of `AndroidInjectionModule` which is descripted according to official document as
  ```
 /**
  * Contains bindings to ensure the usability of {@code dagger.android} framework classes. This
@@ -84,28 +80,27 @@ public interface AppComponent {
 Dagger lets you use multibindings to contribute entries to an injectable map as long as the map keys are known at compile time.
 
 To contribute an entry to a multibound map, add a method to a module that returns the value and is annotated with @IntoMap and with another custom annotation that specifies the map key for that entry.
-``` java
+``` kotlin
 @Module
-public abstract class ViewModelModule {
+abstract class ViewModelModule {
 
-    @Binds
-    @IntoMap
-    @ViewModelKey(SplashActivityViewModel.class)
-    abstract ViewModel bindsSplashActivityViewModel(SplashActivityViewModel settingsActivityViewModel);
+     @Binds
+     @IntoMap
+     @ViewModelKey(MainActivityViewModel::class)
+     abstract fun bindsMainActivityViewModel(viewModel: MainActivityViewModel): ViewModel
 
-    @Binds
-    @IntoMap
-    @ViewModelKey(MainActivityViewModel.class)
-    abstract ViewModel bindsMainActivityViewModel(MainActivityViewModel mainActivityViewModel);
+     @Binds
+     @IntoMap
+     @ViewModelKey(MainFragViewModel::class)
+     abstract fun bindsMainFragViewModel(viewModel: MainFragViewModel): ViewModel
 }
 ```
 In the above example, two `ViewModel` are added into a map with the structure `(Map<K, Provider<V>>).`, where key is a customized key annotated with `@ViewModelKey`, valus is a `Provider`
-``` java
-@Retention(RetentionPolicy.RUNTIME)
+
+``` kotlin
+@kotlin.annotation.Retention(AnnotationRetention.RUNTIME)
 @MapKey
-public @interface ViewModelKey {
-    Class<? extends ViewModel> value();
-}
+annotation class ViewModelKey(val value: KClass<out ViewModel>)
 ```
 
 Annotation `@Binds` is similar to `@Provides`. Simply put, the difference is `@Provides` return a concrete instance, while `@Binds` return an interface
@@ -114,35 +109,34 @@ Annotation `@Binds` is similar to `@Provides`. Simply put, the difference is `@P
 
 #### Annotation `@ContributesAndroidInjector`
 Dagger Android introduced an annotation which can reduce the `Component` `Binds` `IntoSet` `Subcomponent` `ActivityKey` `FragmentKey` etc. boilerplate for you.
-``` java
+``` kotlin
 @Module
-public abstract class ActivityBuilder {
-    // @ContributesAndroidInjector(modules = SplashActivityModule.class)
-    // SplashActivityModule provides the dependencies specific to the SplashActivity
-    @ContributesAndroidInjector()
-    abstract SplashActivity bindsSplashActivity();
+abstract class ActivityBuilder {
 
-    // some other activity
+    @ContributesAndroidInjector(modules = [MainActivityModule::class])
+    abstract fun bindsMainActivity(): MainActivity
+
 }
+
 ```
 
 `ActivityBuilder` tells Dagger all activities in the compile time. Using `@ContributesAndroidInjector`, Dagger generates automatically the following code for us.
 
 ``` java
-@Module(subcomponents = ActivityBuilder_BindsSplashActivity.SplashActivitySubcomponent.class)
-public abstract class ActivityBuilder_BindsSplashActivity {
-  private ActivityBuilder_BindsSplashActivity() {}
+@Module(subcomponents = ActivityBuilder_BindsMainActivity.MainActivitySubcomponent.class)
+public abstract class ActivityBuilder_BindsMainActivity {
+  private ActivityBuilder_BindsMainActivity() {}
 
   @Binds
   @IntoMap
-  @ActivityKey(SplashActivity.class)
-  abstract AndroidInjector.Factory<? extends Activity> bindAndroidInjectorFactory(
-      SplashActivitySubcomponent.Builder builder);
+  @ClassKey(MainActivity.class)
+  abstract AndroidInjector.Factory<?> bindAndroidInjectorFactory(
+      MainActivitySubcomponent.Builder builder);
 
-  @Subcomponent
-  public interface SplashActivitySubcomponent extends AndroidInjector<SplashActivity> {
+  @Subcomponent(modules = MainActivityModule.class)
+  public interface MainActivitySubcomponent extends AndroidInjector<MainActivity> {
     @Subcomponent.Builder
-    abstract class Builder extends AndroidInjector.Builder<SplashActivity> {}
+    abstract class Builder extends AndroidInjector.Builder<MainActivity> {}
   }
 }
 ```
@@ -186,83 +180,73 @@ public PrePopulateDataWorker(@Assisted @NonNull Context context, @Assisted @NonN
  Here we inject the instance of `DataManger` to the constructor, the `Context` and `WorkerParameters` is provides by Android system.
 
 **Solution**  
-Solution is from this [post](https://medium.com/@nlg.tuan.kiet/dagger-2-setup-with-workmanager-a-complete-step-by-step-guild-bb9f474bde37).
+Solution is from this [blog post](https://medium.com/@nlg.tuan.kiet/dagger-2-setup-with-workmanager-a-complete-step-by-step-guild-bb9f474bde37).
 
 **Explain**
 `WorkManager` allows us to provide our own custom `WorkFactory` which is responsible for creating `ListenableWorker` instances. `WorkManager` needs to be initialized when the application starts, before you get an instance of the `WorkManager` singleton. Hence it should be called either during `Application.onCreate()` or in a `ContentProvider.onCreate()`.
 > `Worker` is a subclass of `ListenableWorker`
 
-``` java
+``` kotlin
 @Inject
-WorkerFactory myWorkerFactory;
-@Override
-public void onCreate() {
-   super.onCreate();
-   DaggerAppComponent.builder()
-           .application(this)
-           .build()
-           .inject(this);
-   WorkManager.initialize(this, new Configuration.Builder().setWorkerFactory(myWorkerFactory).build());
+lateinit var myWorkerFactory: WorkerFactory
+override fun onCreate() {
+    super.onCreate()
+    WorkManager.initialize(this, Configuration.Builder().setWorkerFactory(myWorkerFactory).build())
 }
 ```
 Instance `myWorkerFactory` is now responsible for creating `ListenableWorker` object.
 How does `myWorkerFactory` create `ListenableWorker`?
-``` java
+``` kotlin
 @Singleton
-public class MyWorkerFactory extends WorkerFactory {
+class MyWorkerFactory @Inject constructor(
+        private val workerFactories: MutableMap<Class<out ListenableWorker>, Provider<CustomWorkerFactory>>
+) : WorkerFactory() {
 
-    private final Map<Class<? extends ListenableWorker>, Provider<CustomWorkerFactory>> workerFactories;
-
-    @Inject
-    public MyWorkerFactory(Map<Class<? extends ListenableWorker>, Provider<CustomWorkerFactory>> workerFactories) {
-        this.workerFactories = workerFactories;
-    }
-
-    @Nullable
-    @Override
-    public ListenableWorker createWorker(@NonNull Context appContext, @NonNull String workerClassName, @NonNull WorkerParameters workerParameters) {
-        ListenableWorker listenableWorker = null;
+    override fun createWorker(appContext: Context, workerClassName: String, workerParameters: WorkerParameters): ListenableWorker? {
+        var listenableWorker: ListenableWorker? = null
         try {
-            Provider<? extends CustomWorkerFactory> provider = null;
-            for (Map.Entry<Class<? extends ListenableWorker>, Provider<CustomWorkerFactory>> entry : workerFactories.entrySet()) {
-                if (Class.forName(workerClassName).isAssignableFrom(entry.getKey())) {
-                    provider = entry.getValue();
-                    break;
+            var provider: Provider<out CustomWorkerFactory>? = null
+            for ((key, value) in workerFactories) {
+                if (Class.forName(workerClassName).isAssignableFrom(key)) {
+                    provider = value
+                    break
                 }
             }
             if (provider == null) {
-                throw new IllegalArgumentException("unknown model class " + workerClassName);
+                throw IllegalArgumentException("unknown model class $workerClassName")
             }
-            listenableWorker = provider.get().create(appContext, workerParameters);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            listenableWorker = provider.get().create(appContext, workerParameters)
+        } catch (e: ClassNotFoundException) {
+            e.printStackTrace()
         }
-        return listenableWorker;
+
+        return listenableWorker
     }
 }
 ```
 It gets `Worker` from a `Map` instance, here is `workerFactories`. This map has the structure:
-* **Key**: class<? extends ListenableWorker>
-* **Value**: Provider< CustomWorkerFactory>
+* **Key**: Class< out ListenableWorker >
+* **Value**: Provider< CustomWorkerFactory >
 
 in the `createWorker` method, We search the map `workerFactories` based on the given `workerClassName` to find out a `CustomWorkerFactory` instance, this `CustomWorkerFactory` is able to create a `ListenableWorker` via method `create(Context context, WorkerParameters workerParams)`. After that, a `ListenableWorker` is created and returned.
- ``` java
-public interface CustomWorkerFactory {
-    ListenableWorker create(Context context, WorkerParameters workerParams);
-}
+ ``` kotlin
+ interface CustomWorkerFactory {
+     fun create(context: Context, workerParams: WorkerParameters): ListenableWorker
+ }
  ```
 **Question**: where does the `workerFactories` come from?
 It's injected by dagger multibindings.
-``` java
+``` kotlin
 @Module
-public abstract class WorkerBindingModule {
-    @Binds
-    @IntoMap
-    @WorkerKey(PrePopulateDataWorker.class)
-    abstract CustomWorkerFactory bindsPrePopulateDataWorker(PrePopulateDataWorker.Factory factory);
+abstract class WorkerBindingModule {
 
     @Binds
-    abstract WorkerFactory bindsWorkerFactory(MyWorkerFactory factory);
+    @IntoMap
+    @WorkerKey(PrePopulateDataWorker::class)
+    abstract fun bindsPrePopulateDataWorker(factory: PrePopulateDataWorker.Factory): CustomWorkerFactory
+
+    @Binds
+    abstract fun bindsWorkerFactory(factory: MyWorkerFactory): WorkerFactory
 }
 ```
 We bind objects into a map. In this example, the map has one entry with
@@ -272,11 +256,23 @@ We bind objects into a map. In this example, the map has one entry with
 Dagger helps us inject a instance of `PrePopulateDataWorker.Factory` automatically into the map in the runtime.
 
 ``` java
-public class PrePopulateDataWorker extends Worker {
-  ...
-  @AssistedInject.Factory
-  public interface Factory extends CustomWorkerFactory {
-  }
+class PrePopulateDataWorker @AssistedInject constructor(
+        @Assisted context: Context,
+        @Assisted workerParams: WorkerParameters,
+        private val dataManager: DataManager
+) : CoroutineWorker(context, workerParams) {
+
+    override val coroutineContext = Dispatchers.IO
+
+    override suspend fun doWork(): Result {
+        return coroutineScope {
+            dataManager.prePopulateData()
+            Result.success()
+        }
+    }
+
+    @AssistedInject.Factory
+    interface Factory : CustomWorkerFactory
 }
 ```
 **Question**: What is the implementation of the interface `PrePopulateDataWorker.Factory`?
@@ -293,6 +289,7 @@ public abstract class AssistedInject_WorkerAssistedInjectModule {
 }
 ```
 this abstract class is annotated with `@Module` which provides an implementation of `PrePopulateDataWorker.Factory`, the `PrePopulateDataWorker_AssistedFactory` instance which is also generated by `AssistedInject`
+
 ``` java
 public final class PrePopulateDataWorker_AssistedFactory implements PrePopulateDataWorker.Factory {
   private final Provider<DataManager> dataManager;
@@ -318,9 +315,11 @@ Go back to the dagger multibindings map, now we are much more clear what is insi
 * **Value**: `PrePopulateDataWorker_AssistedFactory` instance. It's a subtype of `CustomWorkerFactory`
 
 When we want to enqueue a worker into the `WorkManager`, our `myWorkFactory` search the multibinding map and return the corresponding `Worker` for us.
-``` java
-OneTimeWorkRequest request = new OneTimeWorkRequest.Builder(PrePopulateDataWorker.class).build();
-WorkManager.getInstance().enqueue(request);
+
+``` kotlin
+OneTimeWorkRequest.Builder(PrePopulateDataWorker::class.java).build().apply {
+    WorkManager.getInstance().enqueue(this)
+}
 ```
 
 **Summary**

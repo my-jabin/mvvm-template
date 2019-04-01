@@ -64,7 +64,7 @@
 
 
     <PreferenceCategory
-        android:key="other_category"
+        android:key="pref_other_category"
         android:title="Other">
 
         <Preference

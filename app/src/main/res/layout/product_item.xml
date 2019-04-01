@@ -9,6 +9,10 @@
         <variable
             name="itemClickListener"
             type="android.view.View.OnClickListener" />
+
+        <variable
+            name="product"
+            type="com.jiujiu.mvvmTemplate.data.model.Product" />
     </data>
 
 
@@ -33,11 +37,22 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
+                android:text="@{product.name}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text=" World" />
+
+            <TextView
+                android:id="@+id/tv_created_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@{@string/created_at(product.createdAtDataString)}"
+                app:layout_constraintStart_toStartOf="@+id/tv_product_item_name"
+                app:layout_constraintTop_toBottomOf="@+id/tv_product_item_name"
+                tools:text="created data" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 

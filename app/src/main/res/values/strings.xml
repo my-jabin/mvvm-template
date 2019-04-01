@@ -78,4 +78,6 @@
 
     <string name="pref_title_vibrate">Vibrate</string>
     <string name="customer">Customer</string>
+
+    <string name="created_at">"Created at: %s"</string>
 </resources>

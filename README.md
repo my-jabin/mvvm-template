@@ -3,7 +3,7 @@ A template for quickly building a project that implements MVVM architecture usin
 
 ## Requirement:
 * Android Studio 3.3+
-* [Kotlin](https://github.com/my-jabin/mvvm-template/tree/kotlin) / Java
+* [Kotlin](https://github.com/my-jabin/mvvm-template) / Java
 
 ## Architecture
 * Single-Activity-Multiple-Fragments

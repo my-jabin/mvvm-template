@@ -14,8 +14,7 @@
 
     <fragment
         android:id="@+id/mainFragment"
-        android:name="com.jiujiu.mvvmTemplate.ui.main.MainFragment"
-        android:label="MainFragment">
+        android:name="com.jiujiu.mvvmTemplate.ui.main.MainFragment">
         <action
             android:id="@+id/action_mainFragment_to_productDetailFragment"
             app:destination="@id/productDetailFragment"
@@ -26,8 +25,7 @@
     </fragment>
     <fragment
         android:id="@+id/settingFragment"
-        android:name="com.jiujiu.mvvmTemplate.ui.settings.SettingFragment"
-        android:label="SettingFragment" />
+        android:name="com.jiujiu.mvvmTemplate.ui.settings.SettingFragment" />
     <fragment
         android:id="@+id/productDetailFragment"
         android:name="com.jiujiu.mvvmTemplate.ui.products.details.ProductDetailFragment"

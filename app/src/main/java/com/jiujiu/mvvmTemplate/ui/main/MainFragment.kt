@@ -8,6 +8,7 @@ import androidx.viewpager.widget.ViewPager
 import com.jiujiu.mvvmTemplate.R
 import com.jiujiu.mvvmTemplate.databinding.FragmentMainBinding
 import com.jiujiu.mvvmTemplate.ui.base.BaseFragment
+import com.jiujiu.mvvmTemplate.util.EventObserver
 import org.jetbrains.anko.info
 
 class MainFragment : BaseFragment<FragmentMainBinding, MainFragViewModel>() {
@@ -24,7 +25,14 @@ class MainFragment : BaseFragment<FragmentMainBinding, MainFragViewModel>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupLayout()
+        setupViewModel()
         info("onViewCreated: ")
+    }
+
+    private fun setupViewModel() {
+        viewModel.onBottomNaviClickEvent.observe(this, EventObserver {
+            showFragment(it)
+        })
     }
 
     private fun setupLayout() {
@@ -39,8 +47,15 @@ class MainFragment : BaseFragment<FragmentMainBinding, MainFragViewModel>() {
         })
 
         // setup bottom navigation view
+//        binding.bottomNavigation.setOnNavigationItemSelectedListener { item ->
+//            showFragment(item.itemId)
+//            true
+//        }
+
+        // demenstrate how to use single livedata event
         binding.bottomNavigation.setOnNavigationItemSelectedListener { item ->
             showFragment(item.itemId)
+            viewModel.clickBottomNavigation(item.itemId)
             true
         }
     }
